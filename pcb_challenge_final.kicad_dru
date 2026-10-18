@@ -1,0 +1,12 @@
+(version 1)
+
+# Check overlap even when the via and pad share a net.
+(rule "Challenge - no via in pad"
+  (condition "(A.Type == 'Via' && B.Type == 'Pad') || (A.Type == 'Pad' && B.Type == 'Via')")
+  (constraint physical_clearance (min 0.001mm)))
+
+# The README prohibits tracks and vias inside IC courtyards on all layers.
+# U* are the IC reference designators in this project.
+(rule "Challenge - no routing under ICs"
+  (condition "A.intersectsCourtyard('U*')")
+  (constraint disallow track via))
